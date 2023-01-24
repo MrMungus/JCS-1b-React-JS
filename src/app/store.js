@@ -15,7 +15,7 @@ export const store = configureStore({
           return state;
       }
     },
-    startDate: (state = new Date(), action) => {
+    startDate: (state = '', action) => {
       switch (action.type) {
         case 'SET_START_DATE':
           return action.payload;

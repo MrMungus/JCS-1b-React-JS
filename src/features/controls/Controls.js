@@ -11,7 +11,6 @@ function controls() {
   const [forceDisabled, setForceDisabled] = useState(true);
   const [force, setForce] = useState('police-force');
   const [hasSelection, setHasSelection] = React.useState(false);
-
   const storeHasSelection = useSelector((state) => state.hasSelection);
 
   useEffect(() => {
@@ -38,7 +37,7 @@ function controls() {
 
   const handleStartDateChange = (event) => {
     setStartDate(event.target.value);
-    const selectedDate = new Date(event.target.value);
+    const selectedDate = event.target.value;
     dispatch({ type: 'SET_START_DATE', payload: selectedDate });
     setForceDisabled(false);
     dispatch({
@@ -50,14 +49,11 @@ function controls() {
   const handleForceChange = (event) => {
     const forceID = event.target.value;
     const forceName = forcesList.find((item) => item.id === event.target.value);
-    console.log(forceName);
     setForce(event.target.value);
-
     dispatch({
       type: 'HAS_SELECTION_FALSE',
       payload: false,
     });
-
     dispatch({
       type: 'SET_FORCE',
       payload: { forceRaw: forceID, forceFormatted: forceName.name },
@@ -80,12 +76,12 @@ function controls() {
 
   return (
     <div>
-      <div className="card text-bg-light mb-3 py-3 px-3">
+      <div className="card text-bg-light my-3 py-3 px-3">
         <div className="card-body">
           <div className="row">
             <div className="col-lg-4 col-md-3 col-sm-12 mb-4">
               {/* Select available start dates */}
-              <p class="h6">From</p>
+              <p className="h6">From</p>
               <select
                 className="form-select"
                 value={startDate}
@@ -99,11 +95,11 @@ function controls() {
                 {availablityData_isError && availablityData_error.message}
                 {availablityData_isSuccess &&
                   availablityData &&
-                  availablityData.map((item) => (
+                  availablityData.map((item, index) => (
                     <option
                       className="dropdown-item"
                       value={item.date}
-                      key={item.date}
+                      key={index} //{item.date}
                     >
                       {item.date}
                     </option>
@@ -113,7 +109,7 @@ function controls() {
 
             <div className="col-lg-6 col-md-6 col-sm-12 mb-3">
               {/* Select available polices forces using dates */}
-              <p class="h6">Force</p>
+              <p className="h6">Force</p>
               <select
                 className="form-select"
                 value={force}
@@ -132,7 +128,9 @@ function controls() {
                       ? outerElement['stop-and-search'].map((innerElement) =>
                           forcesList.map((item) =>
                             innerElement === item.id ? (
-                              <option value={item.id}>{item.name}</option>
+                              <option value={item.id} key={item.id}>
+                                {item.name}
+                              </option>
                             ) : null
                           )
                         )
@@ -141,7 +139,7 @@ function controls() {
               </select>
             </div>
             <div className="col-lg-2 col-md-3 col-sm-12 mt-3">
-              <p class="h6"></p>
+              <p className="h6"></p>
               <button className="btn btn-primary w-100" onClick={handleGetData}>
                 Get Data
               </button>

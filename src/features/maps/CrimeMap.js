@@ -8,12 +8,12 @@ import 'leaflet/dist/leaflet.css';
 function CrimeMap() {
   const searchBy = useSelector((state) => state.searchBy.byForce);
   const mapPin = L.icon({
-    iconUrl: 'https://github.com/MrMungus/JCS-1b-React-JS/blob/main/src/map-pin.png?raw=true',
+    iconUrl:
+      'https://github.com/MrMungus/JCS-1b-React-JS/blob/main/src/map-pin.png?raw=true',
     iconSize: [26, 43],
     iconAnchor: [13, 44],
     popupAnchor: [0, -25],
   });
-
   const {
     data: availablityData,
     isLoading,
@@ -40,26 +40,25 @@ function CrimeMap() {
       middleLat = totalLat / availablityData.length;
       middleLng = totalLng / availablityData.length;
 
-      console.log('Tlat:', totalLat);
-      console.log('length:', availablityData.length);
-      console.log('middleLat:', middleLat);
-      console.log('middleLon:', middleLng);
+      //console.log('Tlat:', totalLat);
+      //console.log('length:', availablityData.length);
+      //console.log('middleLat:', middleLat);
+      //console.log('middleLon:', middleLng);
     }
   }
   if (!isFinite(middleLat) || !isFinite(middleLng)) {
     middleLat = 51.505;
     middleLng = -0.09;
   }
-
   let rndMiddleLat = middleLat.toFixed(2);
   let rndMiddleLng = middleLng.toFixed(2);
-  console.log('rndMiddleLat:', rndMiddleLat);
-  console.log('rndMiddleLon:', rndMiddleLng);
+  //console.log('rndMiddleLat:', rndMiddleLat);
+  //console.log('rndMiddleLon:', rndMiddleLng);
 
   return (
     <div className="card text-bg-light">
       <div className="card-body">
-        <h5 class="card-title">Locations</h5>
+        <h5 className="card-title">Locations</h5>
         {isLoading ? (
           <text>loading...</text>
         ) : isError ? (
@@ -71,7 +70,7 @@ function CrimeMap() {
             zoom={10}
             scrollWheelZoom={false}
           >
-            {availablityData.map((location) => {
+            {availablityData.map((location, index) => {
               if (
                 !location.location ||
                 !location.location.latitude ||
@@ -81,7 +80,7 @@ function CrimeMap() {
               }
               return (
                 <Marker
-                  key={location.id}
+                  key={index} //{location.id}
                   position={[
                     location.location.latitude,
                     location.location.longitude,
