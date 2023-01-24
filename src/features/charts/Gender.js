@@ -7,18 +7,13 @@ function ChartReason() {
   const searchBy = useSelector((state) => state.searchBy.byForce);
   const force = useSelector((state) => state.force);
   const startDate = useSelector((state) => state.startDate);
-  const dateOptions = { month: 'long', year: 'numeric' };
-  const formattedStartDate = startDate.toLocaleString('en-US', dateOptions);
-
   const [labels, setLabels] = useState([]);
-
   const {
     data: availablityData,
     isLoading,
     isSuccess,
     isError,
   } = useGetByForceQuery(searchBy);
-
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
@@ -69,7 +64,11 @@ function ChartReason() {
       },
       title: {
         display: true,
-        text: force.forceFormatted + ': ' + formattedStartDate,
+        text: force.forceFormatted + ' ' +
+        new Date(startDate).toLocaleDateString('en-GB', {
+          month: 'short',
+          year: 'numeric',
+        }),
       },
     },
     scales: {
@@ -86,7 +85,7 @@ function ChartReason() {
   return (
     <div className="card text-bg-light">
       <div className="card-body">
-        <h5 class="card-title">Genders</h5>
+        <h5 className="card-title">Genders</h5>
         {isLoading ? (
           <text>loading...</text>
         ) : isError ? (

@@ -6,7 +6,6 @@ import ChartAgeRange from './features/charts/AgeRange';
 import ChartGender from './features/charts/Gender';
 import ChartEthnicity from './features/charts/Ethnicity';
 import ChartReason from './features/charts/Reason';
-//import { MapProvider } from 'react-leaflet';
 import CrimeMap from './features/maps/CrimeMap';
 
 export default function App() {
@@ -14,7 +13,6 @@ export default function App() {
     <div className="App">
       <Navbar></Navbar>
       <div className="container">
-        <h1 className="h2 my-4 text-center">UK Police Stop &amp; Search</h1>
         <Controls></Controls>
         <div className="row">
           <div className="col-lg-12 col-md-12 col-sm-12 mb-3">
