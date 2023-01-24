@@ -8,11 +8,12 @@ import 'leaflet/dist/leaflet.css';
 function CrimeMap() {
   const searchBy = useSelector((state) => state.searchBy.byForce);
   const mapPin = L.icon({
-    iconUrl: 'https://i.imgur.com/hXN7PYF.png',
+    iconUrl: 'map-pin.png',
     iconSize: [26, 43],
     iconAnchor: [13, 44],
     popupAnchor: [0, -25],
   });
+
   const {
     data: availablityData,
     isLoading,
