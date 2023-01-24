@@ -8,7 +8,7 @@ import 'leaflet/dist/leaflet.css';
 function CrimeMap() {
   const searchBy = useSelector((state) => state.searchBy.byForce);
   const mapPin = L.icon({
-    iconUrl: 'https://github.com/MrMungus/JCS-1b-React-JS/blob/main/src/features/maps/map-pin.png?raw=true',
+    iconUrl: 'https://github.com/MrMungus/JCS-1b-React-JS/blob/main/src/map-pin.png?raw=true',
     iconSize: [26, 43],
     iconAnchor: [13, 44],
     popupAnchor: [0, -25],
