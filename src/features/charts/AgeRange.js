@@ -42,12 +42,12 @@ function ChartReason() {
           .lighten((index / labels.length) * 1.0)
           .hex();
       });
-
+      setLabels(labels);
       setChartData({
         labels: Object.keys(ageCount),
         datasets: [
           {
-            label: ' ',
+            label: '',
             data,
             backgroundColor,
           },
@@ -81,9 +81,9 @@ function ChartReason() {
       <div className="card-body">
         <h5 className="card-title">Age Ranges</h5>
         {isLoading ? (
-          <text>loading...</text>
+          <p>loading...</p>
         ) : isError ? (
-          <text>Error: {isError}</text>
+          <p>Error: {isError}</p>
         ) : (
           <Bar data={chartData} options={options} />
         )}

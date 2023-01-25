@@ -60,9 +60,9 @@ function CrimeMap() {
       <div className="card-body">
         <h5 className="card-title">Locations</h5>
         {isLoading ? (
-          <text>loading...</text>
+          <p>loading...</p>
         ) : isError ? (
-          <text>Error: {isError}</text>
+          <p>Error: {isError}</p>
         ) : (
           <MapContainer
             className="mapContainer"
@@ -80,7 +80,7 @@ function CrimeMap() {
               }
               return (
                 <Marker
-                  key={index} //{location.id}
+                  key={index}
                   position={[
                     location.location.latitude,
                     location.location.longitude,
@@ -88,16 +88,13 @@ function CrimeMap() {
                   icon={mapPin}
                 >
                   <Popup>
-                    <div className="card">
+                    <div className="card mx-6">
                       <div className="card-body">
-                        <h5 className="card-title">
-                          {location.location.street.name}
-                        </h5>
-                        <p className="card-text">{location.legislation}</p>
-                      </div>
-                      <div className="card-body">
-                        <ul className="list-group list-group-flush">
-                          <li className="list-group-item">
+                        <div className="row">
+                          <div className="col-12 mb-1">
+                            <b>{location.legislation}</b>
+                          </div>
+                          <div className="col-12">
                             <b>Date:</b>{' '}
                             {new Date(location.datetime).toLocaleDateString(
                               'en-GB',
@@ -107,8 +104,7 @@ function CrimeMap() {
                                 year: 'numeric',
                               }
                             )}
-                          </li>
-                          <li className="list-group-item">
+                            {'  '}
                             <b>Time:</b>{' '}
                             {new Date(location.datetime).toLocaleTimeString(
                               'en-GB',
@@ -117,40 +113,37 @@ function CrimeMap() {
                                 minute: '2-digit',
                               }
                             )}
-                          </li>
-                          <li className="list-group-item">
+                          </div>
+                          <div className="col-12">
                             <b>Object of Search:</b> {location.object_of_search}
-                          </li>
-                          <li className="list-group-item">
+                          </div>
+                          <div className="col-12">
                             <b>Type:</b> {location.type}
-                          </li>
-                          <li className="list-group-item">
+                          </div>
+                          <div className="col-12">
                             <b>Self defined ethincity:</b>{' '}
                             {location.self_defined_ethnicity}
-                          </li>
-                          <li className="list-group-item">
+                          </div>
+                          <div className="col-12">
                             <b>Officer defined ethincity:</b>{' '}
                             {location.officer_defined_ethnicity}
-                          </li>
-                          <li className="list-group-item">
+                          </div>
+                          <div className="col-12">
                             <b>Gender:</b> {location.gender}
-                          </li>
-                          <li className="list-group-item">
+                            {'  '}
                             <b>Age:</b> {location.age_range}
-                          </li>
-                          <li className="list-group-item">
+                          </div>
+                          <div className="col-12">
                             <b>Street name:</b> {location.location.street.name}
-                          </li>
-                          <li className="list-group-item">
+                          </div>
+                          <div className="col-12">
                             <b>Street ID:</b> {location.location.street.id}
-                          </li>
-                          <li className="list-group-item">
-                            <b>Lat:</b> {location.location.latitude}
-                          </li>
-                          <li className="list-group-item">
-                            <b>Lng:</b> {location.location.longitude}
-                          </li>
-                        </ul>
+                          </div>
+                          <div className="col-12">
+                            <b>Lat:</b> {location.location.latitude} <b>Lng:</b>{' '}
+                            {location.location.longitude}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </Popup>

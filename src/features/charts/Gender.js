@@ -41,12 +41,12 @@ function ChartReason() {
         else if (label === 'Female') return 'rgba(248, 185, 212,0.7)';
         else return 'gray';
       });
-
+      setLabels(labels);
       setChartData({
         labels: Object.keys(genderCount),
         datasets: [
           {
-            label: ' ',
+            label: '',
             data,
             backgroundColor,
           },
@@ -64,22 +64,24 @@ function ChartReason() {
       },
       title: {
         display: true,
-        text: force.forceFormatted + ' ' +
-        new Date(startDate).toLocaleDateString('en-GB', {
-          month: 'short',
-          year: 'numeric',
-        }),
+        text:
+          force.forceFormatted +
+          ' ' +
+          new Date(startDate).toLocaleDateString('en-GB', {
+            month: 'short',
+            year: 'numeric',
+          }),
       },
     },
-    scales: {
-      xAxes: [
-        {
-          barThickness: 20,
-          barPercentage: 0.5,
-          categoryPercentage: 0.5,
-        },
-      ],
-    },
+    // scales: {
+    //   xAxis: [
+    //     {
+    //       barThickness: 60,
+    //       barPercentage: 1.9,
+    //       categoryPercentage: 0.5,
+    //     },
+    //   ],
+    // },
   };
 
   return (
@@ -87,9 +89,9 @@ function ChartReason() {
       <div className="card-body">
         <h5 className="card-title">Genders</h5>
         {isLoading ? (
-          <text>loading...</text>
+          <p>loading...</p>
         ) : isError ? (
-          <text>Error: {isError}</text>
+          <p>Error: {isError}</p>
         ) : (
           <Bar data={chartData} options={options} />
         )}
