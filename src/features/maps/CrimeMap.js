@@ -50,8 +50,8 @@ function CrimeMap() {
     middleLat = 51.505;
     middleLng = -0.09;
   }
-  let rndMiddleLat = middleLat.toFixed(2);
-  let rndMiddleLng = middleLng.toFixed(2);
+  let rndMiddleLat = middleLat.toFixed(3);
+  let rndMiddleLng = middleLng.toFixed(3);
   //console.log('rndMiddleLat:', rndMiddleLat);
   //console.log('rndMiddleLon:', rndMiddleLng);
 
@@ -156,6 +156,17 @@ function CrimeMap() {
             />
           </MapContainer>
         )}
+        <div className="row">
+          <div className="col-2">
+            <p> Mid Lat: {rndMiddleLat}</p>
+          </div>
+          <div className="col-2">
+            <p> Mid Lng: {rndMiddleLng}</p>
+          </div>
+          <div className="col-2">
+            <p> Zoom: {}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
