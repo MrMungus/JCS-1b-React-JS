@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useGetByForceQuery } from '../../services/policeAPI';
 import { useSelector } from 'react-redux';
 import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet';
@@ -54,7 +54,7 @@ function CrimeMap() {
   let rndMiddleLng = middleLng.toFixed(3);
   //console.log('rndMiddleLat:', rndMiddleLat);
   //console.log('rndMiddleLon:', rndMiddleLng);
-
+  const [center, setCenter] = useState([rndMiddleLat, rndMiddleLng]);
   return (
     <div className="card text-bg-light">
       <div className="card-body">
@@ -66,9 +66,10 @@ function CrimeMap() {
         ) : (
           <MapContainer
             className="mapContainer"
-            center={[parseFloat(rndMiddleLat), parseFloat(rndMiddleLng)]}
-            zoom={10}
-            scrollWheelZoom={false}
+            //center={[parseFloat(rndMiddleLat), parseFloat(rndMiddleLng)]}
+            center={center}
+            zoom={11}
+            scrollWheelZoom={true}
           >
             {availablityData.map((location, index) => {
               if (
@@ -165,6 +166,16 @@ function CrimeMap() {
           </div>
           <div className="col-2">
             <p> Zoom: {}</p>
+          </div>
+          <div className="col-2">
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                setCenter([rndMiddleLat, rndMiddleLng]);
+              }}
+            >
+              Center
+            </button>
           </div>
         </div>
       </div>
