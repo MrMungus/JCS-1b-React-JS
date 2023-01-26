@@ -157,27 +157,6 @@ function CrimeMap() {
             />
           </MapContainer>
         )}
-        <div className="row">
-          <div className="col-2">
-            <p> Mid Lat: {rndMiddleLat}</p>
-          </div>
-          <div className="col-2">
-            <p> Mid Lng: {rndMiddleLng}</p>
-          </div>
-          <div className="col-2">
-            <p> Zoom: {}</p>
-          </div>
-          <div className="col-2">
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                setCenter([rndMiddleLat, rndMiddleLng]);
-              }}
-            >
-              Center
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );
