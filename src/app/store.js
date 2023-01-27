@@ -44,7 +44,7 @@ export const store = configureStore({
               'force=' +
               action.payload.forceRaw +
               '&date=' +
-              action.payload.date,
+              action.payload.startDate,
           };
         default:
           return state;

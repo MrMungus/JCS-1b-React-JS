@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useGetByForceQuery } from '../../services/policeAPI';
 import { useSelector } from 'react-redux';
 import {
@@ -7,16 +7,11 @@ import {
   TileLayer,
   Popup,
   useMapEvents,
-  useMap,
 } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const zoom = 11;
-const center = [51.505, -0.09];
-
 function CrimeMap() {
-  const [map, setMap] = useState(null);
   const searchBy = useSelector((state) => state.searchBy.byForce);
   const mapPin = L.icon({
     iconUrl:
@@ -66,17 +61,6 @@ function CrimeMap() {
   //console.log('rndMiddleLat:', rndMiddleLat);
   //console.log('rndMiddleLon:', rndMiddleLng);
   const [center, setCenter] = useState([rndMiddleLat, rndMiddleLng]);
-
-  function FlyToButton() {
-    const onClick = () => map.flyTo([rndMiddleLat, rndMiddleLng], zoom);
-
-    return (
-      <button className="btn btn-outline-dark" onClick={onClick}>
-        Center Markers
-      </button>
-    );
-  }
-
   return (
     <div className="card text-bg-light">
       <div className="card-body">
@@ -90,9 +74,8 @@ function CrimeMap() {
             className="mapContainer"
             //center={[parseFloat(rndMiddleLat), parseFloat(rndMiddleLng)]}
             center={center}
-            zoom={zoom}
+            zoom={11}
             scrollWheelZoom={true}
-            ref={setMap}
           >
             {availablityData.map((location, index) => {
               if (
@@ -182,16 +165,23 @@ function CrimeMap() {
         )}
         <div className="row">
           <div className="col-2">
-            <p>Lat: {rndMiddleLat}</p>
+            <p> Mid Lat: {rndMiddleLat}</p>
           </div>
           <div className="col-2">
-            <p>Lng: {rndMiddleLng}</p>
+            <p> Mid Lng: {rndMiddleLng}</p>
           </div>
           <div className="col-2">
             <p> Zoom: {}</p>
           </div>
           <div className="col-2">
-            <FlyToButton />
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                setCenter([rndMiddleLat, rndMiddleLng]);
+              }}
+            >
+              Center
+            </button>
           </div>
         </div>
       </div>
