@@ -51,6 +51,14 @@ export const store = configureStore({
       }
     },
   },
+  searchCount: (state = 0, action) => {
+    switch (action.type) {
+      case 'SET_SEARCH_COUNT':
+        return action.payload;
+        default:
+          return state;
+    }
+  },
   middleware: (getDefaultMiddiware) =>
     getDefaultMiddiware().concat(policeApi.middleware),
 });

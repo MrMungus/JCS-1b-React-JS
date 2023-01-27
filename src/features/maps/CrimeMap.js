@@ -12,11 +12,17 @@ import {
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const zoom = 11;
+const zoom = 9;
 const center = [51.505, -0.09];
 
 function CrimeMap() {
   const [map, setMap] = useState(null);
+  let totalLat = 0;
+  let totalLng = 0;
+  let middleLat = 51.505;
+  let middleLng = -0.09;
+  let totalCount = 0;
+  let processing = false;
   const searchBy = useSelector((state) => state.searchBy.byForce);
   const mapPin = L.icon({
     iconUrl:
@@ -31,31 +37,34 @@ function CrimeMap() {
     isSuccess,
     isError,
   } = useGetByForceQuery(searchBy);
-  let totalLat = 0;
-  let totalLng = 0;
-  let middleLat = 51.505;
-  let middleLng = -0.09;
+
+  // useEffect(() => {
+  //   let totalCount = 0;
+  //   if (isSuccess) {
+  //     availablityData.forEach((item) => {
+  //       if (item.location != null) totalCount += 1;
+  //     });
+  //   }
+  // }, [isSuccess, availablityData]);
 
   if (availablityData) {
+    processing = true;
     availablityData.forEach((location) => {
       if (
         location.location &&
         location.location.latitude &&
         location.location.longitude
       ) {
+        totalCount += 1;
         totalLat += parseFloat(location.location.latitude);
         totalLng += parseFloat(location.location.longitude);
       }
     });
-    if (availablityData.length > 0) {
-      middleLat = totalLat / availablityData.length;
-      middleLng = totalLng / availablityData.length;
-
-      //console.log('Tlat:', totalLat);
-      //console.log('length:', availablityData.length);
-      //console.log('middleLat:', middleLat);
-      //console.log('middleLon:', middleLng);
+    if (totalCount > 0) {
+      middleLat = totalLat / totalCount;
+      middleLng = totalLng / totalCount;
     }
+    processing = false;
   }
   if (!isFinite(middleLat) || !isFinite(middleLng)) {
     middleLat = 51.505;
@@ -63,13 +72,10 @@ function CrimeMap() {
   }
   let rndMiddleLat = middleLat.toFixed(3);
   let rndMiddleLng = middleLng.toFixed(3);
-  //console.log('rndMiddleLat:', rndMiddleLat);
-  //console.log('rndMiddleLon:', rndMiddleLng);
   const [center, setCenter] = useState([rndMiddleLat, rndMiddleLng]);
 
   function FlyToButton() {
     const onClick = () => map.flyTo([rndMiddleLat, rndMiddleLng], zoom);
-
     return (
       <button className="btn btn-outline-dark" onClick={onClick}>
         Center Markers
@@ -180,17 +186,15 @@ function CrimeMap() {
             />
           </MapContainer>
         )}
-        <div className="row">
-          <div className="col-2">
-            <p>Lat: {rndMiddleLat}</p>
+        <div className="row mt-3">
+          <div className="col-6">
+            <p>
+              <b>mid lat: </b>
+              {rndMiddleLat} <b>mid lng: </b>
+              {rndMiddleLng} <b>Zoom: </b> {zoom} <b>Count: </b> {totalCount}{' '}
+            </p>
           </div>
-          <div className="col-2">
-            <p>Lng: {rndMiddleLng}</p>
-          </div>
-          <div className="col-2">
-            <p> Zoom: {}</p>
-          </div>
-          <div className="col-2">
+          <div className="col-6 text-end">
             <FlyToButton />
           </div>
         </div>
