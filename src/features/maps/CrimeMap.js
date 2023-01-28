@@ -170,8 +170,10 @@ function CrimeMap() {
                             <b>Street ID:</b> {location.location.street.id}
                           </div>
                           <div className="col-12">
-                            <b>Lat:</b> {location.location.latitude} <b>Lng:</b>{' '}
-                            {location.location.longitude}
+                            <b>Lat:</b>{' '}
+                            {parseFloat(location.location.latitude).toFixed(3)}{' '}
+                            <b>Lng:</b>{' '}
+                            {parseFloat(location.location.longitude).toFixed(3)}
                           </div>
                         </div>
                       </div>
