@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useGetByForceQuery } from '../../services/policeAPI';
 import { useSelector } from 'react-redux';
 import {
@@ -17,12 +17,14 @@ const center = [51.505, -0.09];
 
 function CrimeMap() {
   const [map, setMap] = useState(null);
-  let totalLat = 0;
-  let totalLng = 0;
-  let middleLat = 51.505;
-  let middleLng = -0.09;
-  let totalCount = 0;
-  let processing = false;
+
+  const [rndMiddleLat, setRndMiddleLat] = useState(51.505);
+  const [rndMiddleLng, setRndMiddleLng] = useState(-0.09);
+  const [center, setCenter] = useState([rndMiddleLat, rndMiddleLng]);
+  const [crimeCount, setCrimeCount] = useState(0);
+  const [validCount, setValidCount] = useState(0);
+  const [loopCount, setLoopCount] = useState(0);
+
   const searchBy = useSelector((state) => state.searchBy.byForce);
   const mapPin = L.icon({
     iconUrl:
@@ -38,41 +40,47 @@ function CrimeMap() {
     isError,
   } = useGetByForceQuery(searchBy);
 
-  // useEffect(() => {
-  //   let totalCount = 0;
-  //   if (isSuccess) {
-  //     availablityData.forEach((item) => {
-  //       if (item.location != null) totalCount += 1;
-  //     });
-  //   }
-  // }, [isSuccess, availablityData]);
+  useEffect(() => {
+    var loopCounter = 0;
+    var crimeCounter = 0;
+    let totalLat = 0.0;
+    let totalLng = 0.0;
+    let middleLat = 51.505;
+    let middleLng = -0.09;
+    let validCounter = 0;
 
-  if (availablityData) {
-    processing = true;
-    availablityData.forEach((location) => {
-      if (
-        location.location &&
-        location.location.latitude &&
-        location.location.longitude
-      ) {
-        totalCount += 1;
-        totalLat += parseFloat(location.location.latitude);
-        totalLng += parseFloat(location.location.longitude);
+    loopCounter += 1;
+    if (isSuccess) {
+      availablityData.forEach((location) => {
+        crimeCounter += 1;
+        if (
+          location.location &&
+          location.location.latitude &&
+          location.location.longitude
+        ) {
+          validCounter += 1;
+          totalLat += parseFloat(location.location.latitude);
+          totalLng += parseFloat(location.location.longitude);
+        }
+      });
+
+      if (validCounter > 0) {
+        middleLat = totalLat / validCounter;
+        middleLng = totalLng / validCounter;
       }
-    });
-    if (totalCount > 0) {
-      middleLat = totalLat / totalCount;
-      middleLng = totalLng / totalCount;
     }
-    processing = false;
-  }
-  if (!isFinite(middleLat) || !isFinite(middleLng)) {
-    middleLat = 51.505;
-    middleLng = -0.09;
-  }
-  let rndMiddleLat = middleLat.toFixed(3);
-  let rndMiddleLng = middleLng.toFixed(3);
-  const [center, setCenter] = useState([rndMiddleLat, rndMiddleLng]);
+
+    if (!isFinite(middleLat) || !isFinite(middleLng)) {
+      middleLat = 51.505;
+      middleLng = -0.09;
+    }
+
+    setRndMiddleLat(middleLat);
+    setRndMiddleLng(middleLng);
+    setCrimeCount(crimeCounter);
+    setValidCount(validCounter);
+    setLoopCount(loopCounter);
+  }, [isSuccess, availablityData]);
 
   function FlyToButton() {
     const onClick = () => map.flyTo([rndMiddleLat, rndMiddleLng], zoom);
@@ -192,8 +200,10 @@ function CrimeMap() {
           <div className="col-6">
             <p>
               <b>mid lat: </b>
-              {rndMiddleLat} <b>mid lng: </b>
-              {rndMiddleLng} <b>Zoom: </b> {zoom} <b>Count: </b> {totalCount}{' '}
+              {rndMiddleLat.toFixed(3)} <b>mid lng: </b>
+              {rndMiddleLng.toFixed(3)} <b>Zoom: </b> {zoom}{' '}
+              <b>Total Crimes: </b> {crimeCount} <b>Valids: </b> {validCount}{' '}
+              <b>Loops: </b> {loopCount}
             </p>
           </div>
           <div className="col-6 text-end">
