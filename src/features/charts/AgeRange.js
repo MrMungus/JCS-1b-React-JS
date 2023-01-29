@@ -81,9 +81,13 @@ function ChartReason() {
       <div className="card-body">
         <h5 className="card-title">Age Ranges</h5>
         {isLoading ? (
-          <p>loading...</p>
+          <div class="spinner-border text-primary text-center" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         ) : isError ? (
-          <p>Error: {isError}</p>
+          <div class="alert alert-warning" role="alert">
+            Error: {isError} - try selecting date and force and try again
+          </div>
         ) : (
           <Bar data={chartData} options={options} />
         )}
