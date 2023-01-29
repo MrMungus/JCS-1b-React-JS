@@ -26,7 +26,7 @@ function CrimeMap() {
   const [validCount, setValidCount] = useState(0);
   const [loopCount, setLoopCount] = useState(0);
   const [geoStatus, setGeoStatus] = useState('');
-  const [yourPosition, setYourPosition] = useState([]);
+  const [yourPosition, setYourPosition] = useState([0.0, 0.0]);
 
   const searchBy = useSelector((state) => state.searchBy.byForce);
   const mapPin = L.icon({
@@ -112,13 +112,22 @@ function CrimeMap() {
     }
   }, []);
 
-  // function YourPositionMarker() {
-  //   return yourPosition === null ? null : (
-  //     <Marker position={yourPosition}>
-  //       <Popup>You are here</Popup>
-  //     </Marker>
-  //   );
-  // }
+  function YourPositionMarker() {
+    const mapPin = L.icon({
+      iconUrl:
+        'https://github.com/MrMungus/JCS-1b-React-JS/blob/map-events/src/map-pin-your-position.png?raw=true',
+      iconSize: [26, 43],
+      iconAnchor: [13, 44],
+      popupAnchor: [0, -25],
+    });
+    if (yourPosition != [0.0, 0.0]) {
+      return (
+        <Marker position={yourPosition} icon={mapPin}>
+          <Popup>You are here</Popup>
+        </Marker>
+      );
+    }
+  }
 
   function FlyToYourLocationButton() {
     const onClick = () => map.flyTo(yourPosition, zoom);
@@ -133,8 +142,10 @@ function CrimeMap() {
     <div className="card text-bg-light">
       <div className="card-body">
         <h5 className="card-title">Locations</h5>
-        {isLoading ? (
-          <p>loading...</p>
+        {!isSuccess ? (
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         ) : isError ? (
           <p>Error: {isError}</p>
         ) : (
@@ -227,7 +238,7 @@ function CrimeMap() {
                 </Marker>
               );
             })}
-            {/* <YourPositionMarker/> */}
+            <YourPositionMarker />
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
