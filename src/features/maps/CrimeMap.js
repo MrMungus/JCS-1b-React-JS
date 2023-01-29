@@ -14,6 +14,7 @@ import 'leaflet/dist/leaflet.css';
 
 const zoom = 9;
 const center = [51.505, -0.09];
+var loopCounter = 0;
 
 function CrimeMap() {
   const [map, setMap] = useState(null);
@@ -24,6 +25,8 @@ function CrimeMap() {
   const [crimeCount, setCrimeCount] = useState(0);
   const [validCount, setValidCount] = useState(0);
   const [loopCount, setLoopCount] = useState(0);
+  const [geoStatus, setGeoStatus] = useState('');
+  const [yourPosition, setYourPosition] = useState([]);
 
   const searchBy = useSelector((state) => state.searchBy.byForce);
   const mapPin = L.icon({
@@ -41,7 +44,6 @@ function CrimeMap() {
   } = useGetByForceQuery(searchBy);
 
   useEffect(() => {
-    var loopCounter = 0;
     var crimeCounter = 0;
     let totalLat = 0.0;
     let totalLng = 0.0;
@@ -90,6 +92,42 @@ function CrimeMap() {
       </button>
     );
   }
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setGeoStatus('Geolocation is not supported by your browser');
+    } else {
+      setGeoStatus('Locating...');
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setGeoStatus('Located');
+          setYourPosition([
+            position.coords.latitude,
+            position.coords.longitude,
+          ]);
+        },
+        () => {
+          setGeoStatus('Unable to retrieve your location');
+        }
+      );
+    }
+  }, []);
+
+  // function YourPositionMarker() {
+  //   return yourPosition === null ? null : (
+  //     <Marker position={yourPosition}>
+  //       <Popup>You are here</Popup>
+  //     </Marker>
+  //   );
+  // }
+
+  function FlyToYourLocationButton() {
+    const onClick = () => map.flyTo(yourPosition, zoom);
+    return (
+      <button className="btn btn-outline-dark" onClick={onClick}>
+        Your Location
+      </button>
+    );
+  }
 
   return (
     <div className="card text-bg-light">
@@ -102,7 +140,6 @@ function CrimeMap() {
         ) : (
           <MapContainer
             className="mapContainer"
-            //center={[parseFloat(rndMiddleLat), parseFloat(rndMiddleLng)]}
             center={center}
             zoom={zoom}
             scrollWheelZoom={true}
@@ -190,6 +227,7 @@ function CrimeMap() {
                 </Marker>
               );
             })}
+            {/* <YourPositionMarker/> */}
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -197,17 +235,19 @@ function CrimeMap() {
           </MapContainer>
         )}
         <div className="row mt-3">
-          <div className="col-6">
+          <div className="col-8">
             <p>
               <b>mid lat: </b>
               {rndMiddleLat.toFixed(3)} <b>mid lng: </b>
               {rndMiddleLng.toFixed(3)} <b>Zoom: </b> {zoom}{' '}
               <b>Total Crimes: </b> {crimeCount} <b>Valids: </b> {validCount}{' '}
-              <b>Loops: </b> {loopCount}
+              <b>Loops: </b> {loopCount} <b>Geo: </b> {geoStatus}{' '}
+              <b>Your Pos: </b>
+              {yourPosition[0]}, {yourPosition[1]}
             </p>
           </div>
-          <div className="col-6 text-end">
-            <FlyToButton />
+          <div className="col-4 text-end">
+            <FlyToYourLocationButton /> <FlyToButton />
           </div>
         </div>
       </div>
