@@ -81,14 +81,14 @@ function controls() {
           <div className="row">
             <div className="col-lg-4 col-md-3 col-sm-12 mb-4">
               {/* Select available start dates */}
-              <p className="h6">From</p>
+              <p className="h6">Year/Month</p>
               <select
                 className="form-select"
                 value={startDate}
                 onChange={handleStartDateChange}
               >
                 <option className="dropdown-item" value="default">
-                  start date
+                  date
                 </option>
 
                 {availablityData_isLoading && 'Loading...'}
@@ -109,7 +109,7 @@ function controls() {
 
             <div className="col-lg-6 col-md-6 col-sm-12 mb-3">
               {/* Select available polices forces using dates */}
-              <p className="h6">Force</p>
+              <p className="h6">Police Force</p>
               <select
                 className="form-select"
                 value={force}
@@ -117,7 +117,7 @@ function controls() {
                 disabled={forceDisabled}
               >
                 <option className="dropdown" value="default">
-                  available police forces
+                  force
                 </option>
                 {availablityData_isLoading && 'Loading...'}
                 {availablityData_isError && availablityData_error.message}

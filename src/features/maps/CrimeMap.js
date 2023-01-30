@@ -115,7 +115,7 @@ function CrimeMap() {
   function YourPositionMarker() {
     const mapPin = L.icon({
       iconUrl:
-        'https://github.com/MrMungus/JCS-1b-React-JS/blob/map-events/src/map-pin-your-position.png?raw=true',
+        'https://github.com/MrMungus/JCS-1b-React-JS/blob/main/src/map-pin-your-position.png?raw=true',
       iconSize: [26, 43],
       iconAnchor: [13, 44],
       popupAnchor: [0, -25],
