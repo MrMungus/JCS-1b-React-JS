@@ -161,6 +161,11 @@ function CrimeMap() {
             scrollWheelZoom={true}
             ref={setMap}
           >
+            <YourPositionMarker />
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
             {availablityData.map((location, index) => {
               if (
                 !location.location ||
@@ -243,11 +248,6 @@ function CrimeMap() {
                 </Marker>
               );
             })}
-            <YourPositionMarker />
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
           </MapContainer>
         )}
         <div className="row mt-3">
