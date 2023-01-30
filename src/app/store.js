@@ -44,12 +44,20 @@ export const store = configureStore({
               'force=' +
               action.payload.forceRaw +
               '&date=' +
-              action.payload.date,
+              action.payload.startDate,
           };
         default:
           return state;
       }
     },
+  },
+  searchCount: (state = 0, action) => {
+    switch (action.type) {
+      case 'SET_SEARCH_COUNT':
+        return action.payload;
+        default:
+          return state;
+    }
   },
   middleware: (getDefaultMiddiware) =>
     getDefaultMiddiware().concat(policeApi.middleware),

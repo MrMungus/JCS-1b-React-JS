@@ -70,11 +70,13 @@ function chartEthnicity() {
       },
       title: {
         display: true,
-        text: force.forceFormatted + ' ' +
-        new Date(startDate).toLocaleDateString('en-GB', {
-          month: 'short',
-          year: 'numeric',
-        }),
+        text:
+          force.forceFormatted +
+          ' ' +
+          new Date(startDate).toLocaleDateString('en-GB', {
+            month: 'short',
+            year: 'numeric',
+          }),
       },
     },
   };
@@ -84,9 +86,13 @@ function chartEthnicity() {
       <div className="card-body">
         <h5 className="card-title">Ethnicity</h5>
         {isLoading ? (
-          <p>loading...</p>
+          <div class="spinner-border text-primary text-center" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         ) : isError ? (
-          <p>Error: {isError}</p>
+          <div class="alert alert-warning" role="alert">
+            Error: {isError} - try selecting date and force and try again
+          </div>
         ) : (
           <Bar data={chartData} options={options} />
         )}
