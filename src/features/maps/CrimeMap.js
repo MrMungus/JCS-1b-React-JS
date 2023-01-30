@@ -122,7 +122,10 @@ function CrimeMap() {
     });
     if (yourPosition != [0.0, 0.0]) {
       return (
-        <Marker position={yourPosition} icon={mapPin}>
+        <Marker
+          position={[yourPosition[0].toFixed(3), yourPosition[1].toFixed(3)]}
+          icon={mapPin}
+        >
           <Popup>You are here</Popup>
         </Marker>
       );
