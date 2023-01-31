@@ -86,11 +86,11 @@ function chartEthnicity() {
       <div className="card-body">
         <h5 className="card-title">Ethnicity</h5>
         {isLoading ? (
-          <div class="spinner-border text-primary text-center" role="status">
-            <span class="visually-hidden">Loading...</span>
+          <div className="spinner-border text-primary text-center" role="status">
+            <span className="visually-hidden">Loading...</span>
           </div>
         ) : isError ? (
-          <div class="alert alert-warning" role="alert">
+          <div className="alert alert-warning" role="alert">
             Error: {isError} - try selecting date and force and try again
           </div>
         ) : (

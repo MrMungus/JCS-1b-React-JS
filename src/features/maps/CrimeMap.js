@@ -1,34 +1,19 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGetByForceQuery } from '../../services/policeAPI';
 import { useSelector } from 'react-redux';
-import {
-  MapContainer,
-  Marker,
-  TileLayer,
-  Popup,
-  useMapEvents,
-  useMap,
-} from 'react-leaflet';
+import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const zoom = 9;
-const center = [51.505, -0.09];
-var loopCounter = 0;
-
 function CrimeMap() {
+  const zoom = 12;
   const [map, setMap] = useState(null);
-
   const [rndMiddleLat, setRndMiddleLat] = useState(51.505);
   const [rndMiddleLng, setRndMiddleLng] = useState(-0.09);
-  const [center, setCenter] = useState([rndMiddleLat, rndMiddleLng]);
   const [crimeCount, setCrimeCount] = useState(0);
-  const [validCount, setValidCount] = useState(0);
-  const [loopCount, setLoopCount] = useState(0);
-  const [geoStatus, setGeoStatus] = useState('');
   const [yourPosition, setYourPosition] = useState([0.0, 0.0]);
-
   const searchBy = useSelector((state) => state.searchBy.byForce);
+  const startDate = useSelector((state) => state.startDate);
   const mapPin = L.icon({
     iconUrl:
       'https://github.com/MrMungus/JCS-1b-React-JS/blob/main/src/map-pin.png?raw=true',
@@ -50,8 +35,6 @@ function CrimeMap() {
     let middleLat = 51.505;
     let middleLng = -0.09;
     let validCounter = 0;
-
-    loopCounter += 1;
     if (isSuccess) {
       availablityData.forEach((location) => {
         crimeCounter += 1;
@@ -65,23 +48,18 @@ function CrimeMap() {
           totalLng += parseFloat(location.location.longitude);
         }
       });
-
       if (validCounter > 0) {
         middleLat = totalLat / validCounter;
         middleLng = totalLng / validCounter;
       }
     }
-
     if (!isFinite(middleLat) || !isFinite(middleLng)) {
       middleLat = 51.505;
       middleLng = -0.09;
     }
-
     setRndMiddleLat(middleLat);
     setRndMiddleLng(middleLng);
     setCrimeCount(crimeCounter);
-    setValidCount(validCounter);
-    setLoopCount(loopCounter);
   }, [isSuccess, availablityData]);
 
   function FlyToButton() {
@@ -94,19 +72,17 @@ function CrimeMap() {
   }
   useEffect(() => {
     if (!navigator.geolocation) {
-      setGeoStatus('Geolocation is not supported by your browser');
+      console.log('Geolocation is not supported by your browser');
     } else {
-      setGeoStatus('Locating...');
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setGeoStatus('Located');
           setYourPosition([
             position.coords.latitude,
             position.coords.longitude,
           ]);
         },
         () => {
-          setGeoStatus('Unable to retrieve your location');
+          console.log('Unable to retrieve your location');
         }
       );
     }
@@ -140,27 +116,47 @@ function CrimeMap() {
       </button>
     );
   }
-
   return (
     <div className="card text-bg-light">
       <div className="card-body">
-        <h5 className="card-title">Locations</h5>
+        <h5 className="card-title">Stop &amp; Search Locations</h5>
+        {crimeCount > 0 && (
+          <div className="mb-3">
+            <h1 className="h6 text-muted">
+              Total for{' '}
+              {new Date(startDate).toLocaleDateString('en-GB', {
+                month: 'long',
+                year: 'numeric',
+              })}{' '}
+              is {crimeCount}
+            </h1>
+          </div>
+        )}
         {isLoading ? (
-          <div class="spinner-border text-primary text-center" role="status">
-            <span class="visually-hidden">Loading...</span>
+          <div
+            className="spinner-border text-primary text-center"
+            role="status"
+          >
+            <span className="visually-hidden">Loading...</span>
           </div>
         ) : isError ? (
-          <div class="alert alert-warning" role="alert">
+          <div className="alert alert-warning" role="alert">
             Error: {isError} - try selecting date and force and try again
           </div>
         ) : (
           <MapContainer
+            preferCanvas={true}
             className="mapContainer"
-            center={center}
+            center={[rndMiddleLat, rndMiddleLng]}
             zoom={zoom}
             scrollWheelZoom={true}
             ref={setMap}
           >
+            <YourPositionMarker />
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
             {availablityData.map((location, index) => {
               if (
                 !location.location ||
@@ -243,26 +239,10 @@ function CrimeMap() {
                 </Marker>
               );
             })}
-            <YourPositionMarker />
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
           </MapContainer>
         )}
         <div className="row mt-3">
-          <div className="col-8">
-            <p>
-              <b>mid lat: </b>
-              {rndMiddleLat.toFixed(3)} <b>mid lng: </b>
-              {rndMiddleLng.toFixed(3)} <b>Zoom: </b> {zoom}{' '}
-              <b>Total Crimes: </b> {crimeCount} <b>Valids: </b> {validCount}{' '}
-              <b>Loops: </b> {loopCount} <b>Geo: </b> {geoStatus}{' '}
-              <b>Your Pos: </b>
-              {yourPosition[0]}, {yourPosition[1]}
-            </p>
-          </div>
-          <div className="col-4 text-end">
+          <div className="col-12 text-end">
             <FlyToYourLocationButton /> <FlyToButton />
           </div>
         </div>

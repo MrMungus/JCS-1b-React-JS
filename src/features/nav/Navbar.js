@@ -42,14 +42,35 @@ function navbar() {
                 charts. This can take 20 seconds or so.
               </li>
               <li>
-                Map pins are clickable and will display information about the
-                crime comitted at that location.
+                Some locations might take longer to load markers on the map, as
+                places such as Merseyside can conduct over 5000 stop and
+                searches in one month. The map may also stutter with a lot of
+                markers. If developed further marker clustering would be
+                utilised to improve performace. e.g. Dorset and City of London
+                forces tend to perform better on the map, as those forces
+                conduct relatively low numbers of stop and searches and
+                therefore a lower number of markers need to be rendered.
+              </li>
+              <li>
+                Once the markers are loaded you will be able to click the
+                'Center Markers' button to fly to the center of that marker
+                group.
+              </li>
+              <li>
+                Map markers are clickable and will display information about the
+                stop and search at that location in a popup.
               </li>
               <li>
                 Use the zoom buttons on the map to zoom in or out. Move around
                 the map using mouse click to grab the map canvas.
               </li>
               <li>Select and load more data if you wish.</li>
+              <li>
+                You can click the 'Your Location' button to fly to your position
+                on the map if you allow it and your browser has location
+                services enabled. However, MoDNET does tend to block geolocation
+                services.{' '}
+              </li>
             </ol>
           </Modal.Body>
           <Modal.Footer>
