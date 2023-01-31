@@ -32,7 +32,7 @@ export default function App() {
           <div className="col-md-6 col-sm-12 mb-3">
             <ChartReason></ChartReason>
           </div>
-          <div className="col-12 mb-4">
+          <div className="col-12 mb-4 text-center">
             <p>by Tristan Halford Jan 2023</p>
           </div>
         </div>

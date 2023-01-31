@@ -72,6 +72,9 @@ function navbar() {
                 services.{' '}
               </li>
             </ol>
+            <p className="text-muted text-center">
+              by Tristan Halford Jan 2023
+            </p>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowModal(false)}>
